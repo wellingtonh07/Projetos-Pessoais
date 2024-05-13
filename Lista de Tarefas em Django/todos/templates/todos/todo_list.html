@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+    Lista de tarefas
+{% endblock page_title %}
+
+{% block content %}
+
+{% if todo_list %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Título:</th>
+                <th scope="col">Criado em:</th>
+                <th scope="col">Data de entrega:</th>
+                <th scope="col">Finalizado em:</th>
+                <th scope="col">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for todo in todo_list %}
+                <tr>
+                    <th scope="row">{{ todo.pk }}</th>
+                    <td>{{ todo.titulo }}</td>
+                    <td>{{ todo.criado_em }}</td>
+                    <td>{{ todo.data_entrega }}</td>
+                    <td>{{ todo.finalizado_em|default:"-" }}</td>
+                    <td>
+                        <a href="{% url "todo_complete" pk=todo.pk %}" class="btn btn-primary btn-sm {% if todo.finalizado_em %}disabled{% endif %}">Concluir</a>
+
+                        <a href="{% url "todo_update" pk=todo.pk %}" class="btn btn-secondary btn-sm {% if todo.finalizado_em %}disabled{% endif %}">Editar</a>
+
+                        <a href="{% url "todo_delete" pk=todo.pk %}" class="btn btn-danger btn-sm" >Excluir</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        
+        </tbody>
+    </table>
+{%else%}
+    <p>Não há tarefas cadastradas.</p>
+{%endif%}
+
+    <a href="{% url 'todo_create' %}" class="btn btn-primary">Nova Tarefa</a>
+{% endblock content %}
+        
+
+       
+    
